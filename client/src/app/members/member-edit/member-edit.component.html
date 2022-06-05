@@ -1,0 +1,64 @@
+<div class="row" *ngIf="member">
+    <div class="colo-4">
+        <h1>Your profile</h1>
+    </div>
+    <div class="col-8">
+        <div class="alert alert-info" *ngIf="editMember.dirty">
+            <p><strong>Information: </strong> You have made changes. Any changes willl be lost. </p>
+        </div>
+    </div>
+    
+    <div class="col-8">
+        <tabset class="member-tabset">
+            <tab heading="About {{member.knownAs}}">
+                <form #editMember="ngForm" id="editMember" (ngSubmit)="updateMember()">
+                    <h4>Description</h4>
+                    <textarea [(ngModel)]="member.introduction" class="form-control" name="introduction" rows="6"></textarea>
+                    <h4 class="mt-2">Looking for</h4>
+                    <textarea [(ngModel)]="member.lookingFor" class="form-control" name="lookingFor" rows="6"></textarea>
+                    <h4 class="mt-2">Interests</h4>
+                    <textarea [(ngModel)]="member.interests" class="form-control" name="Interests" rows="6"></textarea>
+                    <h4 class="mt-2">Location Details: </h4>
+                    <div class="form-inline">
+                        <label for="city">City: </label>
+                        <input [(ngModel)]="member.city" type="text" class="form-control mx-2" name="city">
+                        <label for="city">Country: </label>
+                        <input [(ngModel)]="member.country" type="text" class="form-control mx-2" name="country">
+                    </div>
+                </form>
+                
+            </tab>
+            <tab heading="Edit Photo">
+                <app-photo-editor [member]="member"></app-photo-editor>
+            </tab>
+            
+        </tabset>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <img src="{{member.photoURL || './assets/user.png'}}" alt="{{member.knownAs}}"
+            class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p>{{member.city}}, {{member.country}}</p>
+                </div>
+                <div>
+                    <strong>Age:</strong>
+                    <p>{{member.age}}</p>
+                </div>
+                <div>
+                    <strong>Last Active:</strong>
+                    <p>{{member.lastActive}}</p>
+                </div>
+                <div>
+                    <strong>Member Since:</strong>
+                    <p>{{member.created}}</p>
+                </div>                
+            </div>
+            <div class="card-footer">               
+                <button [disabled]="!editMember.dirty" form="editMember" type="submit" class="btn btn-success btn-block">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
