@@ -33,6 +33,12 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 import { MembersMessagesComponent } from './members-messages/members-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { BsModalService, BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
+import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +56,12 @@ import { MembersMessagesComponent } from './members-messages/members-messages.co
     TextInputComponent,
     DateInputComponent,
     TestErrorsComponent,
-    MembersMessagesComponent
+    MembersMessagesComponent,
+    AdminPanelComponent,
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +82,7 @@ import { MembersMessagesComponent } from './members-messages/members-messages.co
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
     TimeagoModule.forRoot(),
+    ModalModule.forRoot()
   ],
   exports:[
     BsDropdownModule,
@@ -80,7 +92,8 @@ import { MembersMessagesComponent } from './members-messages/members-messages.co
     ReactiveFormsModule,
     PaginationModule,
     ButtonsModule,
-    TimeagoModule
+    TimeagoModule,
+    ModalModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
