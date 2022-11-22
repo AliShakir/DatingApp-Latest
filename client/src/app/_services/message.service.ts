@@ -21,7 +21,6 @@ export class MessageService {
   constructor(private http: HttpClient) { }
 
   createHubConnection(user:User,otherUsername:string){
-    console.log('OK',otherUsername);  
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'message?user=' + otherUsername,{
         accessTokenFactory: () => user.token
@@ -31,12 +30,14 @@ export class MessageService {
 
       this.hubConnection.start().catch(error => console.log(error));
 
-      this.hubConnection.on('ReceiveMessageThread',messages => {        
+      this.hubConnection.on('ReceiveMessageThread',messages => {
         this.messageThreadSource.next(messages)
+        
       })
 
       this.hubConnection.on('NewMessage', message => {
-        this.messageThread$.pipe(take(1)).subscribe(messages =>{
+        this.messageThread$.pipe(take(1)).subscribe(messages =>{            
+        console.log('Messages',messages);      
           this.messageThreadSource.next([...messages,message]);
         })
       })
@@ -46,14 +47,12 @@ export class MessageService {
       this.hubConnection.stop();
     }
   }
-  getMessages(pageNumber,pageSize,container){
-    
+  getMessages(pageNumber,pageSize,container){    
     let params = getPaginationHeader(pageNumber,pageSize);
     params = params.append('Container', container);
     return getPaginatedResult<Message[]>(this.baseUrl + 'messages', params,this.http);
   }
-  getMessageThread(username:string){  
-    
+  getMessageThread(username:string){    
     return this.http.get<Message[]>(this.baseUrl + 'messages/thread/'+username);
   }
   async sendMessage(username:string,content:string){
